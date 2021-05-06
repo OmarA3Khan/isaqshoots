@@ -1,0 +1,22 @@
+<%- include("partials/header") %>
+
+<!-- Grid row -->
+<div class="container">
+	<div class="row">
+	  <% photos.forEach(function(video){ %>
+			<% if (video.source) {%>
+			    <div class="col-sm-12 col-md-6" >
+					<div class="embed-responsive embed-responsive-21by9">
+					  <iframe class="embed-responsive-item" src="<%= video.source %>" allowfullscreen></iframe>
+					</div>
+					<p><%= video.description %></p>
+			    </div>
+				<% } %>
+		<% }); %>
+	</div>
+</div>
+<!-- Grid row -->
+
+<script src='/javascripts/index.js'></script>
+<%- include("partials/footer") %>
+

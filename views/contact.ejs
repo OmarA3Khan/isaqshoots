@@ -1,0 +1,98 @@
+<%- include('partials/header') %>
+
+	<div class="container mb-2">
+		<div class="text-center">
+			<h1 class="">
+				CONTACT
+			</h1>
+			<hr class="shadow-sm">
+		</div>
+		<div class="col-md-10 mx-auto">
+			<div class="row align-items-center">
+				<div class="col-md-5 mr-5 mb-1">
+					<div class="text-center">
+						<h4 >Have a question?</h4>
+						<p>Thinking about booking a private session?<br><br>Please do not hesitate to reach out for any reason -- email, call, text, or just fill out the form below and hit "submit".<br><br><bold>E-mail:</bold><br>brucewayne@marvel.com<br>brucewayne@marvel.com
+							<br><br><bold>TEL: </bold> 986684770
+						</p>
+					</div>
+				</div>
+				<div class="col-md-6 mx-auto">
+					<div id="contactForm" >
+						<h2>
+							For any general inquiries, please fill in the following contact form:
+						</h2>
+						<form action="https://formspree.io/f/xzbkopyb" method="POST" id="my-form">
+						  <div class="form-group">
+							<label class="mb-1" for="exampleFormControlInput1"><strong>Email address</strong></label>
+							<input type="email" class="form-control mb-2 shadow-sm" name="email" id="email" placeholder="name@example.com">
+							<label class="mb-1" for="exampleFormControlInput1"><strong>Name</strong></label>
+							<input type="text" class="form-control mb-2 shadow-sm" name="name" id="UserName" placeholder="Name">
+							<label class="mb-1" for="exampleFormControlInput1"><strong>Subject</strong></label>
+							<input type="text" class="form-control mb-2 shadow-sm" name="subject" id="Subject" placeholder="Subject">
+						  </div>
+						  <!-- <div class="form-group"> -->
+						  <label class="mb-1" for="exampleFormControlTextarea1"><strong>Message</strong></label>
+						  <textarea class="form-control mb-1 shadow-sm" name="message" id="message" rows="3"></textarea>
+						  <!-- </div> -->
+						  <button class="btn-square mt-1" type="submit">Submit</button>
+						</form>
+					<div id="status"></div>
+				</div>
+				</div>
+			</div>
+		</div>
+		<div class="text-center">
+			<hr class="shadow-sm">
+			<h1 class="">
+				FAQ
+			</h1>
+		</div>
+		<div class="col-md-8 mx-auto">
+			<% faqs.forEach(function(faq){ %>
+				<p style="color: #5D001E;">
+					<strong style="color:#9a1750;" >Q :</strong> <%= faq.question %>
+				</p>
+				<p>
+					<strong style="color:#9a1750;" >A :</strong> <%= faq.answer %>
+				</p>
+				<% if(currentUser){ %>
+					<div class="d-flex flex-row justify-content-start my-2">
+						<button class="btn edit-btn edit-input mx-3" href="#" data-original="<%= faq._id %>">Edit</button>
+						<form id="delete-form" action="/contact/<%= faq._id %>?_method=DELETE" method="POST">
+							<a><button class="btn edit-btn ">DELETE</button></a>
+						</form>
+					</div>
+					<form id="<%= faq._id %>" class="edit-form d-none my-2" action="/contact/<%= faq._id %>/?_method=PUT" method="POST">
+						<div class="form-group">
+							<input class="form-control" type="text" name="question" placeholder="<%=faq.question %>">
+						</div>
+						<div class="form-group">
+							<input class="form-control" type="text" name="answer" placeholder="<%=faq.answer %>">
+						</div>
+						<div class="form-group">
+							<button class="btn btn-lg btn-default btn-block btn-primary">Submit!</button>
+						</div>
+					</form>
+				<% } %>
+			<%	}); %>
+			<% if(currentUser){ %>
+				<button onclick="showForm()" class="btn edit-btn mx-3" href="#">Add New question</button>
+				<form id="faqForm" class="d-none" action="/contact" method="POST">
+					<div class="form-group">
+						<input class="form-control" type="text" name="question" placeholder="Question">
+					</div>
+					<div class="form-group">
+						<input class="form-control" type="text" name="answer" placeholder="Answer">
+					</div>
+					<div class="form-group">
+						<button class="btn edit-btn">Submit!</button>
+					</div>
+				</form>
+			<% } %>
+		</div>
+	</div>
+	
+
+	<script src='/javascripts/contact.js'></script>
+<%- include('partials/footer') %>

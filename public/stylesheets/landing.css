@@ -1,0 +1,178 @@
+body {
+    background: #e3e2df;
+    font-family: 'Montserrat', sans-serif;
+	/* background:url(../imgs/bg-pattern.png), #d6d4ce; */
+	color: #e3afbc;
+}
+
+h1{
+	color: #940634;
+}
+
+#first {
+	color: #5D001E;
+	font-size: 3vmin;
+	margin-bottom: 10%;
+}
+p{
+	font-size: 2.5vmin;
+	color: #9a1750;
+}
+
+#desktop-content {
+	color: #940634;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a, a:hover, a:focus, a:active {
+      text-decoration: none;
+      color: inherit;
+}
+
+#utube:hover {
+	color:red;
+}
+
+#insta:hover {
+	color:pink;
+}
+#fb:hover {
+	color:#117cd9;
+}
+#twitter:hover {
+	color:#03dffc;
+}
+
+.btn-square {
+	border-radius: 0;
+	border-width: 2px;
+	padding-right: 42px;
+	padding-left: 42px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-color: #9a1750;
+	color: #9a1750;
+}
+
+.btn-square:hover {
+	border-color: #9a1750;
+	background-color: #5d001e;
+	color: #e3afbc;
+}
+
+.welcome-content{
+	position: absolute;
+	top:47%;
+	left: 1%;
+}
+
+@media only screen and (min-width: 600px){
+	
+}
+
+@media only screen and (min-width: 768px){
+	.welcome-content{
+		top:0;
+		left: 0;
+		font-size: 2vh;
+	}
+	#first{
+		/* font-size: 2.5vh; */
+		margin-top: 10%;
+	}
+	p{
+		margin-top: 20%;
+		font-size: 2vh;
+	}
+}
+
+
+/* SLIDESHOW */
+
+.slideshow { 
+  position: fixed;
+  width: 100vw;
+  height: 45vh;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+.slideshow li { 
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: imageAnimation 33s linear infinite; 
+}
+
+
+
+.slideshow li:nth-child(1) { 
+  background-image: url(../imgs/landing1.jpg) /* http://i.imgur.com/K3mPv14.jpg http://i.imgur.com/SBEmFpv.jpg http://i.imgur.com/emvhOnb.jpg http://i.imgur.com/2LSMCmJ.jpg http://i.imgur.com/TVGe0Ef.jpg*/ 
+}
+.slideshow li:nth-child(2) { 
+  background-image: url(../imgs/landing3.jpg);
+  animation-delay: 7s; 
+}
+.slideshow li:nth-child(3) { 
+  background-image: url(../imgs/landing4-edited.jpg);
+  animation-delay: 14s; 
+}
+.slideshow li:nth-child(4) { 
+  background-image: url(../imgs/landing2.jpg);
+  animation-delay: 21s; 
+}
+.slideshow li:nth-child(5) { 
+  background-image: url(../imgs/landing5.jpg);
+  animation-delay: 28s; 
+}
+
+@media only screen and (min-width: 600px){
+	
+}
+
+@media only screen and (min-width: 768px){
+	.slideshow{
+	  width: 50vw;
+	  height: 100vh;
+	  top: 0;
+	  left: 50%;
+	}
+}
+
+@keyframes imageAnimation { 
+  0% { 
+    opacity: 0; 
+    animation-timing-function: ease-in;
+  }
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  20% {
+    opacity: 1
+  }
+  30% {
+    opacity: 0
+  }
+} 
+
+/* Older browser support - .no-cssanimations class added by modernizr */
+.no-cssanimations .slideshow li {
+	opacity: 1;
+}

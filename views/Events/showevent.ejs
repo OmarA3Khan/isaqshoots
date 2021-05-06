@@ -1,0 +1,71 @@
+<%- include("../partials/header") %>
+
+	<div class="container-fluid">
+		<% if(currentUser){ %>
+			<div class="d-flex flex-row justify-content-center my-2">
+				<a href="/index/<%= event._id %>/new" class=" btn edit-btn">
+				upload new media to this event
+				</a>
+				<a class="btn edit-btn mx-3" href="/index/<%= event._id %>/editevent">Edit this event</a>
+				<form id="delete-form" action="/index/<%= event._id %>?_method=DELETE" method="POST">
+					<a><button class="btn edit-btn ">DELETE this event</button></a>
+				</form>
+			</div>
+		<% } %>
+		<img id="event-image" class="img-fluid p-0 m-0" alt="Responsive image" src="<%= event.image %>" data-original="<%= event._id %>">
+		<div class="col-md-8 mx-auto text-center">
+			<h1>
+				<%= event.name %>
+			</h1>
+			<p class="">
+				<%= event.description %>
+			</p>
+		</div>
+		<div class="w-100"></div>
+		<div class="gallery">
+			<% allPhotos.forEach(function(photo){ %>
+				<% if(photo.event == event.name){ %>
+					<%if (photo.source) {%>
+						<% if(currentUser){ %>
+							<div class="d-flex flex-row justify-content-center my-2">
+								<a class="btn edit-btn mx-3" href="/index/<%= photo._id %>/edit">Edit <%= photo.name %></a>
+								<form id="delete-form" action="/index/<%= photo._id %>/photo?_method=DELETE" method="POST">
+									<a><button class="btn edit-btn ">DELETE <%= photo.name %></button></a>
+								</form>
+							</div>
+						<% } %>
+						<div class="embed-responsive embed-responsive-21by9 my-4">
+						  <iframe class="embed-responsive-item" src="<%= photo.source %>" allowfullscreen></iframe>
+						</div>
+					<% }else{%>
+						<div class="img-container my-3">
+							<% if(currentUser){ %>
+								<div class="d-flex flex-row justify-content-center my-1 mx-1">
+									<a class="btn edit-btn mx-3" href="/index/<%= photo._id %>/edit">Edit <%= photo.name %></a>
+									<form id="delete-form" action="/index/<%= photo._id %>/photo?_method=DELETE" method="POST">
+										<a><button class="btn edit-btn ">DELETE <%= photo.name %></button></a>
+									</form>
+								</div>
+							<% } %>
+							<img class="" src="<%= photo.image %>" alt="<%= photo.name %>" data-original="<%= photo.description %>">
+						</div>
+					<% } %>
+				<% } %>
+			<%	}); %>
+		  <li></li>
+		</div>
+	</div>
+
+	<div class="myModal ">
+		<div class="container text-center">
+			<div id="modalDiv ">
+				<h4 id="modalName" class="text-center mt-4">name</h4>
+				<img class="full-img" src="">
+			</div>
+		</div>
+	</div>
+
+	<script src='/javascripts/gallery.js'></script>
+
+<%- include("../partials/footer") %>
+

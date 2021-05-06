@@ -1,0 +1,33 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+	<div class="row">
+		<h1 style="text-align:center;">Edit <%= event.eventName %></h1>
+		<div class="col-12 col-md-6 mx-auto">
+			<form action="/index/event/<%= event._id %>/?_method=PUT" method="POST" enctype="multipart/form-data">
+				<div class="form-group">
+					<input class="form-control" type="text" name="eventName" placeholder="Event Name" value="<%= event.eventName %>">
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="text" name="name" value="<%= event.name %>">
+				</div>
+				<div class="form-group">
+                    <label for="image"><strong>Image :</strong></label>
+                    <input type="file" id="image" name="image" accept="image/*" >
+                </div>
+				<div class="form-group">
+					<input class="form-control" type="number" name="price" value="<%= event.price %>" min="0.01" step="0.01">
+				</div>
+				<div class="form-group">
+					<textarea class="form-control mb-1 shadow-sm" type="text" name="description" value="<%= event.description %>" rows="3"></textarea>
+				</div>
+				<div class="form-group">
+					<button class="btn btn-lg btn-default btn-block btn-primary">Submit!</button>
+				</div>
+			</form>
+			<a href="/index">Go Back!</a>
+		</div>
+	</div>
+</div>
+
+<%- include("../partials/footer") %>

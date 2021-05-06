@@ -1,0 +1,84 @@
+#status {
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  font-weight: 700;
+  padding: 10px;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+#status.success {
+  background-color: #9fe3e3;
+  color:black;
+  animation: status 4s ease forwards;
+}
+
+#status.error {
+  background-color: red;
+  color: black;
+  animation: status 4s ease forwards;
+}
+
+@keyframes status {
+  0% {
+    opacity: 1;
+    pointer-events: all;
+  }
+  90% {
+    opacity: 1;
+    pointer-events: all;
+  }
+  100% {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+#minusButton {
+	margin-right: 1px;
+	border-radius: 4px;
+}
+
+#plusButton {
+	border-radius: 4px;
+}
+
+#qty{
+	background : #e3e2df;
+	width: 50px;
+	border-width: 1px;
+	border-radius: 4px;
+}
+
+.figure .figure-img {
+	max-height: 90vh;
+	margin-left:35%;
+}
+
+#qtySection .purchaseBtns{
+	font-size: 0.8em;
+}
+
+.sizeBtn{
+	border-color: #5d001e;
+	color: #5d001e;
+}
+
+.sizeBtn.selected {
+	border-width: 2px;
+	background-color:#9a1750;
+	color:white;
+}
+
+.borderBtn{
+	border-color: #5d001e;
+	color: #5d001e;
+}
+
+.borderBtn.selected {
+	border-width: 2px;
+	background-color:#9a1750;
+	color:white;
+}
+
+/* =========================================== */

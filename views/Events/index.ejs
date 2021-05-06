@@ -1,0 +1,18 @@
+<%- include("../partials/header") %>
+
+<div class="container-fluid">
+	<div class="event-gallery">
+		<% events.forEach(function(event){ %>
+		  <div class="event-img-container">
+			<a href="/index/<%= event._id %>"><img class="" src="<%= event.image %>" alt="<%= event.name %>" data-original="<%= event._id %>"></a>
+			<div class="text-block">
+			  <h4><strong><%= event.eventName %></strong></h4>
+			</div>
+		  </div>
+		<%	}); %>
+	  <li></li>
+	</div>
+</div>
+
+<%- include("../partials/footer") %>
+

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Google Font -->
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Unica+One&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/app.css">
+	<link rel="stylesheet" href="/stylesheets/events.css">
+	<link rel="stylesheet" href="/stylesheets/gallery.css">
+	<link rel="stylesheet" href="/stylesheets/show.css">
+	
+
+    <title>IsaqShoots</title>
+</head>
+<body>
+	
+	<nav id="mainNavbar" class="navbar navbar-light navbar-expand-md p-0 py-md-3 d-block">
+		<div class="container-fluid">
+			<a href="/" id="navbar-brand" class="navbar-brand">I S A Q S H O O T S</a>
+			 <button class="navbar-toggler" data-toggle="collapse" data-target="#navLinks" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button> 
+			<div  id="navLinks" class="collapse navbar-collapse ">
+				<ul class="nav navbar-nav ml-auto">
+					<li class="nav-item ">
+						<a href="/index" class="nav-link navSelected px-5">HOME</a>
+					</li>
+					<li class="nav-item ">
+						<a href="/films" class="nav-link px-5">FILMS</a>
+					</li>
+					<li class="nav-item ">
+						<a href="/prints" class="nav-link px-5">PRINTS</a>
+					</li>
+					<li class="nav-item ">
+						<a href="/contact" class="nav-link px-5">CONTACT</a>
+					</li>
+					<li class="nav-item ">
+						<a href="/about" class="nav-link px-5">ABOUT</a>
+					</li>
+					<% if(currentUser){ %>
+						<li><a class="nav-link px-5" href="/newevent">NEW EVENT</a></li>	
+						<li><a class="nav-link px-5" href="/logout">Log Out</a></li>
+					<% } %>
+					<li class="nav-item">
+					  <a class="nav-link px-5" href="/cart" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+							<path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+						</svg><span><strong id="itemsInCart" class="">0</strong></span>
+					  </a>
+					</li> 
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div class="container">
+		<% if(error && error.length > 0){ %> 
+			<div class="alert alert-danger" role="alert">
+				<%= error %>
+			</div>
+			<% } %>
+			<% if(success && success.length > 0){ %> 
+			<div class="alert alert-success" role="alert">
+				<%= success %>
+			</div>
+		<% } %>
+	</div>
