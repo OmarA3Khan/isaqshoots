@@ -5,8 +5,6 @@ window.addEventListener("DOMContentLoaded", function () {
 	const imgText = document.querySelector(".myCaption");
 	const modalName = document.querySelector("#modalName");
 
-	updateCartNumber();
-
 	previews.forEach(function(preview){
 		preview.addEventListener("click",function(){
 			modal.classList.add("open");

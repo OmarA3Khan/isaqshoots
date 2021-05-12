@@ -26,7 +26,9 @@ for (var i = 0; i < radioBtns.length; i++){
 // UPDATE CART NUMBER
 function updateCartNumber(){
 	var itemsInCart = document.getElementById("itemsInCart");
-	itemsInCart.innerHTML = localStorage.length;
+	if(localStorage.length){
+		itemsInCart.innerHTML = JSON.parse(localStorage.getItem("cart")).length;	
+	}
 }
 
 updateCartNumber();

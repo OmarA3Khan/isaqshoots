@@ -4,7 +4,6 @@ window.addEventListener("DOMContentLoaded", function () {
 	var buttons         = document.querySelectorAll(".btn");
 	var photo           = document.querySelector("#product");
 	var qtyInputButton  = document.querySelector("#qty");
-	var productElement  = [];
 	var figCaption 		= document.querySelector("#figCaption");
 	var photoId 		= figCaption.getAttribute("data-original");
 	var photoName		= photo.getAttribute("data-original");
@@ -13,6 +12,7 @@ window.addEventListener("DOMContentLoaded", function () {
 	var qtyValue 		= parseInt(qtyInputButton.value);
 	var sizeBtns 		= document.querySelectorAll(".sizeBtn");
 	var borderBtns 		= document.querySelectorAll(".borderBtn");
+	var cartItems 		= [];
 
 	// ========== LISTEN FOR SIZE BUTTON SELECTION ============== 
 	for (var i = 0; i < sizeBtns.length; i++){
@@ -59,23 +59,30 @@ window.addEventListener("DOMContentLoaded", function () {
 	buttons.forEach(function(button){
 		button.addEventListener("click", function(){
 			if(button.id == "addToCartButton"){
-				var itemName = photoName+"Qty";
 				var qtyValue = parseInt(qtyInputButton.value);
-				productElement.push(photoName);
-				productElement.push(photoSrc);
-				productElement.push(photoPrice);
-				productElement.push(qtyValue);
 				var selectedSize = document.getElementsByClassName("sizeBtn btn selected")[0].lastChild.data;
 				var selectedBorder = document.getElementsByClassName("borderBtn btn selected")[0].lastChild.data;
 				var item = {
-					name: photoName,
-					src: photoSrc,
-					price: photoPrice,
+					mediaId: photoId,
 					qty: qtyValue,
 					size:selectedSize,
 					border: selectedBorder
 				}
-				localStorage.setItem(photoId, JSON.stringify(item));
+				cartItems.push(item);
+				if(localStorage.length){
+					storageCartItems = JSON.parse(localStorage.getItem("cart"));
+					console.log("from the JS: ",storageCartItems);
+					for(var i = 0; i < storageCartItems.length; i++){
+						console.log(storageCartItems[i]);
+						if(storageCartItems[i].mediaId !== item.mediaId){
+							cartItems.push(storageCartItems[i]);
+						}
+					}
+					// cartItems.push(localStorage.getItem("cart"));
+				}
+				localStorage.clear();
+				localStorage.setItem("cart", JSON.stringify(cartItems));
+				cartItems = [];
 				updateCartNumber();
 				success();
 			}
@@ -99,6 +106,8 @@ window.addEventListener("DOMContentLoaded", function () {
 	// UPDATE CART NUMBER
 	function updateCartNumber(){
 		var itemsInCart = document.getElementById("itemsInCart");
-		itemsInCart.innerHTML = localStorage.length;
+		if(localStorage.length){
+			itemsInCart.innerHTML = JSON.parse(localStorage.getItem("cart")).length;	
+		}
 	}
 });

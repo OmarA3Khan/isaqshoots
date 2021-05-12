@@ -72,6 +72,7 @@ router.post("/newevent", middleware.isLoggedIn, middleware.upload, function(req,
 
 // show Event
 router.get("/index/:id", function(req, res){
+	var myVariable = "something here";
 	eventObject.findById(req.params.id, function(err, event){
 		// var eventName = event.name;
 		if(err){
@@ -85,7 +86,7 @@ router.get("/index/:id", function(req, res){
 						return res.status(400).send("Item not found.")
 					}else{
 						// console.log(foundPhotos);
-						res.render("Events/showevent", {event: event, allPhotos: foundPhotos});
+						res.render("Events/showevent", {event: event, allPhotos: foundPhotos, myVariable : myVariable});
 					}
 				}
 			});

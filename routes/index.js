@@ -6,6 +6,7 @@ var faqObject      = require("../models/faq.js");
 var passport = require("passport");
 var middleware   = require("../middleware/index.js");
 var User = require("../models/user");
+const stripe = require('stripe')("sk_test_51IDuClHwFt18fkoGdsSNNR1MCQqou0ntd9jd3zrf18FygaIEy6bMhsidZQMewrJr3ymOtwG2Onh7R8wRsOwiepnS003xQ4PKm1")
 
 // LANDING ROUTE
 router.get("/",function(req,res){
@@ -54,7 +55,7 @@ router.get("/cart", function(req, res){
 		if(err){
 			console.log(err);
 			req.flash("err", err.message);
-			res.render("/");
+			res.redirect("/");
 		}else{
 			res.render("cart", {events: allEvents});
 		}
@@ -173,6 +174,63 @@ router.get("/logout", function(req, res){
 	res.redirect("/index");
 });
 
+router.get("/success", function(req, res){
+	res.render("success");
+});
+
+router.get("/cancel", function(req, res){
+	res.render("cancel");
+});
+
 // ========================================= //
+
+router.post('/create-checkout-session', async (req, res) => {
+  const items = req.body.items;
+  lineItems = [];
+  items.forEach(function(item){
+	var name = item.name;
+	var qty = item.qty;
+	var price = item.price; 
+	var pushItem = {
+        price_data: {
+          currency: 'inr',
+          product_data: {
+            name: name,
+          },
+          unit_amount: price * 100,
+        },
+        quantity: qty,
+      }
+	lineItems.push(pushItem);
+  });
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: lineItems,
+    mode: 'payment',
+    success_url: 'https://webdev1-hithere.run-ap-south1.goorm.io/success',
+    cancel_url: 'https://webdev1-hithere.run-ap-south1.goorm.io/cancel',
+  });
+
+  res.json({ id: session.id });
+});
+
+router.get("/media/:id", function(req, res){
+	photoObject.findById(req.params.id, function(err, media){
+		if(err){
+			eventObject.findById(req.params.id, function(err, foundPhoto){
+				if(err){
+					console.log(err);
+					return res.send("there was an error");
+				}else {
+					console.log("found photo :",foundPhoto);
+					return res.send(foundPhoto);
+				}
+			});
+		}else {
+			console.log("found event :",media);
+			return res.send(media);
+		}
+	});
+});
 
 module.exports = router;

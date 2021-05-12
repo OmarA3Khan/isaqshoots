@@ -29,8 +29,14 @@ catch (error) {
     console.log('Error connection: ' + error);
 }
 
+// ==============  STRIPE CONFIG  ==========
+const stripe = require('stripe')(process.env.Stripe_Sec_key);
+
+// ===========================
+
 // ========= APP CONFIG ==========//
 app.set("view engine", "ejs");
+app.use(express.json());
 app.use(express.static("public"));
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended:true}));
@@ -69,6 +75,9 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+// ========================================  //
+
 
 app.use(function(req, res, next){
 	res.locals.currentUser = req.user;
