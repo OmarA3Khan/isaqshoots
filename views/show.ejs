@@ -11,19 +11,26 @@
 			</div>
 			<!-- visible only to admin -->
 			<% if(currentUser){ %>
-				<a class="btn edit-btn float-right mx-3 mb-1" href="/index/<%= picture._id %>/editevent">Edit</a>
-				<form id="delete-form" action="/index/event/<%= picture._id %>?_method=DELETE" method="POST">
-					<a><button class="btn edit-btn float-right mx-3 mb-1">DELETE</button></a>
-				</form>
+				<% if(picture.eventName){ %>
+					<a class="btn edit-btn float-right mx-3 mb-1" href="/index/<%= picture._id %>/edit">Edit</a>
+					<form id="delete-form" action="/index/<%= picture._id %>/photo?_method=DELETE" method="POST">
+						<a><button class="btn edit-btn float-right mx-3 mb-1">DELETE</button></a>
+					</form>
+				<% }else{ %>
+					<a class="btn edit-btn float-right mx-3 mb-1" href="/index/<%= picture._id %>/editevent">Edit</a>
+					<form id="delete-form" action="/index/<%= picture._id %>?_method=DELETE" method="POST">
+						<a><button class="btn edit-btn float-right mx-3 mb-1">DELETE</button></a>
+					</form>
+				<% } %>
 			<% } %>
-			<!-- visible only to admin  -->
+			<!------------------------ -->
 		</div>
 		<div class="col-md-6 order-sm-2 " >
 			<div class="container-fluid ">
 				<h6><strong><%= picture.name %></strong></h6>
 				<p class="mb-3"><%= picture.description %></p>
 				<p id="picturePrice" alt="<%= picture.price %>"><strong>$<%= picture.price %></strong></p>
-				<div class="py-3 mb-3">
+				<div class="py-3 mb-5">
 					<h6><strong>Select Size</strong></h6>
 					<button class="sizeBtn btn btn-outline-secondary m-2 selected">8x12</button>
 					<button class="sizeBtn btn btn-outline-secondary m-2">10x15</button>
@@ -33,14 +40,29 @@
 					<button class="sizeBtn btn btn-outline-secondary m-2">20x30</button>
 					<button class="sizeBtn btn btn-outline-secondary m-2">24x36</button>
 				</div>
-				<div class="mb-4">
+				<!-- <div class="mb-4">
 					<h6 class=""><strong>Type</strong></h6>
 					<p>available in Lustre paper with wooden frame</p>
+				</div> -->
+				<h6><strong>Type</strong></h6>
+				<div class="d-inline-flex my-3">
+					<button class="typeBtn btn btn-outline-light mr-2 mb-3 selected">Lustre paper</button>
+					<button class="typeBtn btn btn-outline-light mb-3">frame</button>
 				</div>
-				<h6><strong>Select Border</strong></h6>
-				<div class="d-inline-flex">
-					<button class="borderBtn btn btn-outline-light mr-2 mb-3 selected">No Border</button>
-					<button class="borderBtn btn btn-outline-light mb-3">White Border</button>
+				<div id="frameColor" class="d-none">
+					<h6><strong>Choose the color for frame.</strong></h6>
+					<div class="frameColor form-check">
+					  <input class="chooseColor form-check-input selected" type="radio" name="flexRadioDefault" id="colorBlack" checked>
+					  <label class="form-check-label" for="flexRadioDefault1">
+						Black
+					  </label>
+					</div>
+					<div class="frameColor form-check">
+					  <input class="chooseColor form-check-input" type="radio" name="flexRadioDefault" id="colorBrown" >
+					  <label class="form-check-label" for="flexRadioDefault2">
+						Brown
+					  </label>
+					</div>
 				</div>
 				<hr>
 			</div>

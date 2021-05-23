@@ -112,20 +112,17 @@
 }
 
 .myModal .container #moreinfo {
-	/* top: 90%; */
 	left: 27%;
 }
 
 @media only screen and (min-width: 600px){
 	.myModal .container #moreinfo {
-		/* top: 90%; */
 		left: 39.5%;
 	}
 }
 
 @media only screen and (min-width: 768px){
 	.myModal .container #moreinfo {
-		/* top: 90%; */
 		left: 44%;
 	}
 }

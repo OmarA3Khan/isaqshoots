@@ -1,8 +1,7 @@
-var express = require("express");
-var router  = express.Router();
-var eventObject    = require("../models/events.js");
-var	photoObject    = require("../models/photos.js")
-var middleware = require("../middleware/index.js");
+var express 	= require("express");
+var router  	= express.Router();
+var eventObject = require("../models/events.js");
+var middleware  = require("../middleware/index.js");
 
 
 // ========  MULTER & CLOUDINARY CONFIG ==================== //
@@ -24,11 +23,8 @@ cloudinary.config({
 
 // INDEX ROUTE
 router.get("/index",function(req,res){
-	// photoObject.find({}, function(err, allPhotos){
-	eventObject.find({}, function(err, allEvents){
-
+	eventObject.find({event: true}, function(err, allEvents){
 		if(err){
-			console.log(err);
 			req.flash("err", err.message);
 			res.render("/");
 		}else{
@@ -42,25 +38,24 @@ router.get("/newevent", middleware.isLoggedIn, function(req, res){
 	res.render("Events/newEvent");
 });
 
-// CREATE ROUTE / NEW Event ROUTE ADD TO DB
+// CREATE ROUTE / NEW Event ROUTE, ADD TO DB
 router.post("/newevent", middleware.isLoggedIn, middleware.upload, function(req,res){
 	cloudinary.uploader.upload(req.file.path, function(err, result) {
 		if(err) {
 			req.flash('From cloudinary error', err.message);
-			console.log("there was an error!", err.message);
 			return res.redirect('back');
       	}
-		var event = req.body.eventName;
+		var event = true;
+		var photo = false;
 		var name = req.body.name;
 		var image = result.secure_url;
 		var imageId = result.public_id;
 		var price = req.body.price;
 		var description = req.body.description;
 		var source = req.body.source;
-		var newEventObject = {eventName: event, name: name, image: image, price: price, description: description, imageId: imageId, source: source};
-		eventObject.create(newEventObject, function(err, newlyCreatedEventObject){
+		var newMediaObject = {event: event, photo: photo, name: name, image: image, price: price, description: description, imageId: imageId, source: source};
+		eventObject.create(newMediaObject, function(err, newlyCreatedMediaObject){
 			if (err){
-				console.log(err);
 				req.flash('error', err.message);
           		return res.redirect('back');
 			}else{
@@ -72,25 +67,18 @@ router.post("/newevent", middleware.isLoggedIn, middleware.upload, function(req,
 
 // show Event
 router.get("/index/:id", function(req, res){
-	var myVariable = "something here";
-	eventObject.findById(req.params.id, function(err, event){
-		// var eventName = event.name;
+	eventObject.find({}, function(err, allmedia){
 		if(err){
-			console.log(err);
-		}else{
-			photoObject.find({}, function(err, foundPhotos){
+			return res.status(400).send("Items not found ");
+		}else {
+			eventObject.findById(req.params.id, function(err, event){
 				if(err){
-					console.log(err);
-				}else{
-					if (!foundPhotos) {
-						return res.status(400).send("Item not found.")
-					}else{
-						// console.log(foundPhotos);
-						res.render("Events/showevent", {event: event, allPhotos: foundPhotos, myVariable : myVariable});
-					}
+					return res.status(400).send("Items not found ");
+				}else {
+					res.render("Events/showevent", {media: allmedia, event: event});
 				}
 			});
-		}	
+		}
 	});
 });
 
@@ -109,10 +97,9 @@ router.put("/index/event/:id", middleware.isLoggedIn, middleware.upload, functio
 	 eventObject.findById(req.params.id, async function(err, foundEvent){
         if(err){
             req.flash("error", err.message);
-			console.log("there was an error !");
-			console.log(err);
             res.redirect("back");
         } else {
+			  const foundEventName = foundEvent.name;
 			  if (req.file) {
 				  try {
 					  await cloudinary.uploader.destroy(foundEvent.imageId);
@@ -121,34 +108,30 @@ router.put("/index/event/:id", middleware.isLoggedIn, middleware.upload, functio
 					  foundEvent.image = result.secure_url;
 				  } catch(err) {
 					  req.flash("error", err.message);
-					  console.log("there was an error !");
-					  console.log(err);
 					  return res.redirect("back");
 				  }
 			  }
 			foundEvent.name = req.body.name || foundEvent.name;
 			if(req.body.name){
-				console.log("name changed")
-				photoObject.find({}, function(err, allPhotos){
+				eventObject.find({photo: true}, function(err, allPhotos){
 					if(err){
-						console.log(err);
 						req.flash("error", err.message);
 						res.redirect("back");
 					}
 					allPhotos.forEach(function(photo){
-						if(photo.event == foundEvent.name){
-							console.log("found a match");
-							photo.event == req.body.name;
+						if(photo.eventName == foundEventName){
+							photo.eventName = req.body.name;
+							photo.save();
 						}
 					});
 				});
 			}
-			foundEvent.eventName = req.body.eventName || foundEvent.eventName;
             foundEvent.description = req.body.description || foundEvent.description;
 			foundEvent.price = req.body.price || foundEvent.price;
+			foundEvent.event = true || foundEvent.photo;
+			foundEvent.photo = false || foundEvent.photo;
             foundEvent.save();
             req.flash("success","Successfully Updated!");
-			console.log("Successfully updated !");
             res.redirect("/index/" + foundEvent._id);
         }
     });
@@ -162,15 +145,15 @@ router.delete('/index/:id', middleware.isLoggedIn, function(req, res) {
       return res.redirect("back");
     }
     try {
-        await cloudinary.uploader.destroy(foundEvent.imageId, function(result) { console.log(result) });
+		if(foundEvent.imageId){
+        	await cloudinary.uploader.destroy(foundEvent.imageId, function(err, result) { console.log(result) });
+		}
         foundEvent.remove();
         req.flash('success', 'Event deleted successfully!');
-		console.log("Event deleted successfully!")
         res.redirect('/index');
     } catch(err) {
         if(err) {
           req.flash("error", err.message);
-		  console.log("there was an error");
           return res.redirect("back");
         }
     }
@@ -181,12 +164,10 @@ router.delete('/index/:id', middleware.isLoggedIn, function(req, res) {
 router.get("/prints/event/:id", function(req, res){
 	eventObject.findById(req.params.id, function(err, foundEvent){
 		if(err){
-			console.log(err);
 		}else{
 			if (!foundEvent) {
                 return res.status(400).send("Item not found.")
             }else{
-				console.log(foundEvent);
 				res.render("show", {picture: foundEvent});
 			}
 		}

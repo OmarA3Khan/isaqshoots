@@ -7,7 +7,6 @@ var express        = require("express"),
 	LocalStrategy  = require("passport-local"),
 	methodOverride = require("method-override"),
 	middleware 	   = require("./middleware/index.js"),
-	photoObject    = require("./models/photos.js"),
 	faqObject      = require("./models/faq.js"),
 	User           = require("./models/user.js"),
 	eventObject    = require("./models/events.js");
@@ -18,8 +17,8 @@ var photoRoutes  = require("./routes/photos");
 var	indexRoutes  = require("./routes/index");
 
 require('dotenv').config();
-
-var url ="mongodb://localhost:27017/V6photos" || process.env.DATABASEURL;
+//
+var url = process.env.DATABASEURL || "mongodb://localhost:27017/V8photos";
 
 try {
     var db = mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -30,7 +29,7 @@ catch (error) {
 }
 
 // ==============  STRIPE CONFIG  ==========
-const stripe = require('stripe')(process.env.Stripe_Sec_key);
+const stripe = require('stripe')(process.env.Stripe_Sec_key_test);
 
 // ===========================
 
@@ -52,7 +51,7 @@ var storage = multer.diskStorage({
   }
 });
 
-var upload = multer({storage: storage}).single('image')
+var upload = multer({storage: storage}).single('image');
 
 var cloudinary = require("cloudinary").v2;
 cloudinary.config({ 

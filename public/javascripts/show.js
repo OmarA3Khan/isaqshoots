@@ -11,7 +11,9 @@ window.addEventListener("DOMContentLoaded", function () {
 	var photoPrice   	= photo.alt;
 	var qtyValue 		= parseInt(qtyInputButton.value);
 	var sizeBtns 		= document.querySelectorAll(".sizeBtn");
-	var borderBtns 		= document.querySelectorAll(".borderBtn");
+	var borderBtns 		= document.querySelectorAll(".typeBtn");
+	var frameColorDiv	= document.querySelector("#frameColor");
+	var radioBtns 		= document.querySelectorAll(".chooseColor")
 	var cartItems 		= [];
 
 	// ========== LISTEN FOR SIZE BUTTON SELECTION ============== 
@@ -45,46 +47,77 @@ window.addEventListener("DOMContentLoaded", function () {
 	}
 
 
-	// ========== LISTEN FOR BORDER BUTTON SELECTION ============== 
+	// ========== LISTEN FOR TYPE BUTTON SELECTION ============== 
 	for (var i = 0; i < borderBtns.length; i++){
 		borderBtns[i].addEventListener("click", function(){
 			borderBtns[0].classList.remove("selected");
 			borderBtns[1].classList.remove("selected");
 			this.classList.add("selected");
+			if(this.innerHTML == 'frame'){
+				frameColorDiv.classList.remove("d-none");
+			}else{
+				frameColorDiv.classList.add("d-none");
+			}
+		});
+	};
+	
+	// ================= CHOOSE FRAME COLOR ==================
+	for (var i = 0; i < radioBtns.length; i++){
+		radioBtns[i].addEventListener("click", function(){
+			radioBtns[0].classList.remove("selected");
+			radioBtns[1].classList.remove("selected");
+			this.classList.add("selected");
+			if(this.id == "colorBlack"){
+				console.log("black");
+			}else{
+				console.log("brown");
+			}
 		});
 	};
 
 	// ======== ADD TO CART FUNCTIONALITY ======== 
+	
+	function addToCart(){
+		var qtyValue = parseInt(qtyInputButton.value);
+		var selectedSize = document.getElementsByClassName("sizeBtn btn selected")[0].innerHTML;
+		var selectedType = document.getElementsByClassName("typeBtn btn selected")[0].innerHTML;
+		if(selectedType == 'frame'){
+			if(document.getElementsByClassName("chooseColor selected")[0].id == "colorBlack"){
+				var frameColor = 'Black';
+			}else{
+				var frameColor = 'Brown';
+			}
+		}
+		var item = {
+			mediaId: photoId,
+			qty: qtyValue,
+			size:selectedSize,
+			type: selectedType,
+			color: frameColor
+		}
+		cartItems.push(item);
+		if(localStorage.length){
+			var storageCartItems = JSON.parse(localStorage.getItem("cart"));
+			for(var i = 0; i < storageCartItems.length; i++){
+				if(storageCartItems[i].mediaId !== item.mediaId){
+					cartItems.push(storageCartItems[i]);
+				}
+			}
+		}
+		localStorage.clear();
+		localStorage.setItem("cart", JSON.stringify(cartItems));
+		cartItems = [];
+		updateCartNumber();
+		success();
+	}
 
 	buttons.forEach(function(button){
 		button.addEventListener("click", function(){
 			if(button.id == "addToCartButton"){
-				var qtyValue = parseInt(qtyInputButton.value);
-				var selectedSize = document.getElementsByClassName("sizeBtn btn selected")[0].lastChild.data;
-				var selectedBorder = document.getElementsByClassName("borderBtn btn selected")[0].lastChild.data;
-				var item = {
-					mediaId: photoId,
-					qty: qtyValue,
-					size:selectedSize,
-					border: selectedBorder
-				}
-				cartItems.push(item);
-				if(localStorage.length){
-					storageCartItems = JSON.parse(localStorage.getItem("cart"));
-					console.log("from the JS: ",storageCartItems);
-					for(var i = 0; i < storageCartItems.length; i++){
-						console.log(storageCartItems[i]);
-						if(storageCartItems[i].mediaId !== item.mediaId){
-							cartItems.push(storageCartItems[i]);
-						}
-					}
-					// cartItems.push(localStorage.getItem("cart"));
-				}
-				localStorage.clear();
-				localStorage.setItem("cart", JSON.stringify(cartItems));
-				cartItems = [];
-				updateCartNumber();
-				success();
+				addToCart();
+			}else if(button.id == "buyNowButton"){
+				addToCart();
+				window.location.href = "/cart";
 			}
 		});
 	});

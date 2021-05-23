@@ -10,7 +10,6 @@ editInputs.forEach(function(input){
 });
 
 function findForm(formId){
-	console.log(editForms.length);
 	editForms.forEach(function(form){
 		if (form.id == formId){
 			form.classList.toggle("d-none");

@@ -1,20 +1,17 @@
 <%- include("partials/header") %>
-
-<div id="reqData" class="d-none" data-original="<%= events %>" >
 	
-</div>
 <div class="container d-flex align-items-center">
     <div class="row">
       <div class="col-md-8 ">
-        <h5 class="mb-4"><strong>CART</strong> (<span id="itemsInCart1">2</span> items)</h5>
+        <h5 class="mb-4"><strong>CART</strong> (<span id="itemsInCart1">0</span> items)</h5>
         <div id="product-container">
 			
         </div>
       </div>
-      <div class="col-md-4 element mt-5">
+      <div id="orderTable" class="col-md-4 element mt-5">
 		<div>
 			<h3>
-				<strong>Order Details</strong>
+				<strong>Order Summary</strong>
 			</h3>
 			<hr>
 			<table class="table table-borderless shadow-sm">
@@ -41,12 +38,12 @@
 				<button id="checkout-button" class="btn btn-primary shadow float-right purchaseBtns">CHECKOUT</button>
 			</div>
 		</div>
-		  <div class="my-3">
+		  <div class="my-5">
 			<div class="pt-4">
 
-			  <h5 class="mb-4">Expected shipping delivery</h5>
+			  <h5 class="mb-4">Expected delivery</h5>
 
-			  <p class="mb-0"> Thu., 12.03. - Mon., 16.03.</p>
+			  <p class="mb-0"> May take upto 7 days.<br>Further details about delivery will be provided once the order has been dispatched.</p>
 			</div>
 		  </div>
       </div>

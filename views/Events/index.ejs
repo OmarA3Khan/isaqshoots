@@ -5,8 +5,8 @@
 		<% events.forEach(function(event){ %>
 		  <div class="event-img-container">
 			<a href="/index/<%= event._id %>"><img class="" src="<%= event.image %>" alt="<%= event.name %>" data-original="<%= event._id %>"></a>
-			<div class="text-block">
-			  <h4><strong><%= event.eventName %></strong></h4>
+			<div class="text-block1">
+			  <h4><strong><%= event.name %></strong></h4>
 			</div>
 		  </div>
 		<%	}); %>

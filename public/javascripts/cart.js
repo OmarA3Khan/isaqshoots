@@ -13,8 +13,13 @@ async function renderHTML (){
 	for(var i = 0; i < cartItems.length; i++){
 	  var productQty = cartItems[i].qty;
 	  var productSize = cartItems[i].size;
-	  var productBorder = cartItems[i].border;
+	  var productType = cartItems[i].type;
 	  var productId = cartItems[i].mediaId;
+	  if(productType == 'frame'){
+		  var productFrameColor = cartItems[i].color;
+	  } else{
+		  var productFrameColor = 'Frame color not available for Lustre paper'
+	  }
 	  const product = await axios.get('/media/'+productId)
 	  .then(function (response) {
 		// handle success
@@ -27,9 +32,8 @@ async function renderHTML (){
 	  productPrice = parseFloat(productPrice);
 	  productQty = parseFloat(productQty);
 	  totalPrice += productPrice*productQty;
-	  console.log(totalPrice);
 	
-	  var item = {name:productName, qty:productQty, price: productPrice}
+	  var item = {productId:productId, qty:productQty, type: productType, size: productSize, Color: productFrameColor}
 	  itemsToSend.push(item);
 		
 		const markup = `
@@ -45,9 +49,9 @@ async function renderHTML (){
 			  <div>
 				<h5 id="productName" ><strong>${productName}</strong></h5>
 				<p class="mb-3 text-muted text-uppercase small"><strong>size :</strong> ${productSize}</p>
-				<p class="mb-2 text-muted text-uppercase small"><strong>type :</strong> Lustre paper with wooden frame</p>
-				<p class="mb-3 text-muted text-uppercase small"><strong>border :</strong> ${productBorder}</p>
-				<p class="mb-3 text-muted text-uppercase small"><strong>price :</strong> ${productPrice}</p>
+				<p class="mb-2 text-muted text-uppercase small"><strong>type :</strong> ${productType}</p>
+				<p class="mb-3 text-muted text-uppercase small"><strong>color :</strong> ${productFrameColor}</p>
+				<p class="mb-3 text-muted text-uppercase small"><strong>price :</strong> $${productPrice}</p>
 			  </div>
 			  <div class="input-group mb-4">
 				<label><strong>Qty &nbsp;</strong></label>
@@ -82,34 +86,29 @@ function table(i,productName,productQty,productPrice){
 }
 	
 // ========= LISTEN FOR CHANGE IN QTY INPUT ========= //
-//var qtyInputButton    = document.querySelectorAll(".qty");
-//qtyInputButton.addEventListener("change", quantityChanged);
 
 function quantityChanged(event){
-	console.log("quantity Changed");
 	var input = event.target
 	if(isNaN(input.value) || input.value <= 0){// error
 		input.value = 1;
 	}
 	var inputValue = input.value;
 	var productID = this.getAttribute("data-original");
-	console.log("productID:",productID);
 	for(var i = 0; i < cartItems.length; i++){
 		if(productID == cartItems[i].mediaId){
-			console.log("mediaId:", cartItems[i].mediaId)
 			var item = {
 				mediaId: cartItems[i].mediaId,
 				qty: inputValue,
 				size:cartItems[i].size,
+				type:cartItems[i].type,
+				color:cartItems[i].color,
 				border: cartItems[i].border
 			}
 			updateCartItems.push(item);
 			if(localStorage.length){
 				var storageCartItems = JSON.parse(localStorage.getItem("cart"));
-				console.log("from the JS: ",storageCartItems);
 				for(var i = 0; i < storageCartItems.length; i++){
 					if(item.mediaId !== storageCartItems[i].mediaId){
-						console.log(storageCartItems[i]);
 						updateCartItems.push(storageCartItems[i]);	
 					}
 				}
@@ -137,7 +136,6 @@ function removeItem(productID){
 }
 
 function pollDOM () {
-  console.log("ïn pollDom");
   var deleteButton = document.querySelectorAll((".dangerButton"));
   var qtyInputButton = document.querySelectorAll(".qty");
   if (qtyInputButton.length) {
@@ -146,7 +144,6 @@ function pollDOM () {
 		  button.addEventListener("change", quantityChanged)
 	  });
 	  deleteButton.forEach(function(button){
-		  console.log("adding delete");
 		  var productID = button.getAttribute("data-original");
 		  button.addEventListener("click", function(){
 			  removeItem(productID);
@@ -155,7 +152,7 @@ function pollDOM () {
 	  });
 	  total.textContent = "$"+totalPrice.toFixed(2);
   } else {
-    setTimeout(pollDOM, 1000); // try again in 300 milliseconds
+    setTimeout(pollDOM, 1000); // try again in 1000 milliseconds
   }
 }
 
@@ -167,7 +164,7 @@ function updateCartNumber(){
 	itemsInCart.innerHTML = cartItems.length;
 }
 
-var stripe = Stripe('pk_test_51IDuClHwFt18fkoGqg6ENOjQYaHSpey8Isf366wa9hYcT94BMbz6s5GkmpOVTUpAPDHVUgEoWzhXe5KKvRmslo16008tIAK55u');
+var stripe = Stripe('pk_live_51ItaMTBNTBHXjDNgW0uo7v0CXXntO0nOtCiTOZyZ8zB8MlpBnZpZNcaCMzC0UUVRwlD2kBzrzcpyjUQfWwzhvm1d00QAut0jNI');
       var checkoutButton = document.getElementById('checkout-button');
 
       checkoutButton.addEventListener('click', function() {
@@ -198,7 +195,7 @@ var stripe = Stripe('pk_test_51IDuClHwFt18fkoGqg6ENOjQYaHSpey8Isf366wa9hYcT94BMb
         })
         .catch(function(error) {
           console.error('Error:', error);
-		  req.flash('error', err.message);
+		  // req.flash('error', err.message);
         });
       });
 	

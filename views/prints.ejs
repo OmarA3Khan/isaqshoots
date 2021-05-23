@@ -2,15 +2,10 @@
 
 <div class="container-fluid">
 	<div class="gallery">
-		<% events.forEach(function(event){ %>
-		  <div class="img-container">
-			<a href="/prints/event/<%= event._id %>"><img class="" src="<%= event.image %>" alt="<%= event.name %>" data-original="<%= event._id %>"></a>
-		  </div>
-		<%	}); %>
-		<% allPhotos.forEach(function(photo){ %>
+		<% media.forEach(function(photo){ %>
 			<% if(!photo.source){ %>
 			  <div class="img-container">
-				<a id="moreinfo" href="/prints/photo/<%= photo._id %>"><img class="" src="<%= photo.image %>" alt="<%= photo.name %>" data-original="<%= photo._id %>"></a>
+				<a id="moreinfo" href="/prints/event/<%= photo._id %>"><img class="" src="<%= photo.image %>" alt="<%= photo.name %>" data-original="<%= photo._id %>"></a>
 			  </div>
 			<% }%>
 		<%	}); %>

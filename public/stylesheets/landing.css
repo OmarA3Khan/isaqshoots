@@ -19,6 +19,10 @@ p{
 	color: #9a1750;
 }
 
+.lightMaroon{
+	color: #9a1750;
+}
+
 #desktop-content {
 	color: #940634;
 }
@@ -81,7 +85,6 @@ a, a:hover, a:focus, a:active {
 		font-size: 2vh;
 	}
 	#first{
-		/* font-size: 2.5vh; */
 		margin-top: 10%;
 	}
 	p{
@@ -123,7 +126,7 @@ a, a:hover, a:focus, a:active {
 
 
 .slideshow li:nth-child(1) { 
-  background-image: url(../imgs/landing1.jpg) /* http://i.imgur.com/K3mPv14.jpg http://i.imgur.com/SBEmFpv.jpg http://i.imgur.com/emvhOnb.jpg http://i.imgur.com/2LSMCmJ.jpg http://i.imgur.com/TVGe0Ef.jpg*/ 
+  background-image: url(../imgs/landing1.jpg); 
 }
 .slideshow li:nth-child(2) { 
   background-image: url(../imgs/landing3.jpg);

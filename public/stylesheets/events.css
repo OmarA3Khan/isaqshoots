@@ -55,14 +55,3 @@
 .event-gallery img:hover {
   transform: scale(1.2);
 }
-
-/* Bottom right text */
-.text-block {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-/*  background-color: black;*/
-  color: white;
-  padding-left: 20px;
-  padding-right: 20px;
-}

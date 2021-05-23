@@ -70,12 +70,12 @@
 	color:white;
 }
 
-.borderBtn{
+.typeBtn{
 	border-color: #5d001e;
 	color: #5d001e;
 }
 
-.borderBtn.selected {
+.typeBtn.selected {
 	border-width: 2px;
 	background-color:#9a1750;
 	color:white;
