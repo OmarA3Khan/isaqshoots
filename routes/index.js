@@ -212,8 +212,8 @@ router.post('/create-checkout-session', async (req, res) => {
 			},
             line_items: lineItems,
             mode: 'payment',
-            success_url: 'https://webdev1-hithere.run-ap-south1.goorm.io/success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url: 'https://webdev1-hithere.run-ap-south1.goorm.io/cancel',
+            success_url: 'https://polar-cliffs-48816.herokuapp.com/success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url: 'https://polar-cliffs-48816.herokuapp.com/cancel',
         });
         res.json({id: session.id});
     } catch(e) {
