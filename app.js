@@ -17,8 +17,8 @@ var photoRoutes  = require("./routes/photos");
 var	indexRoutes  = require("./routes/index");
 
 require('dotenv').config();
-//
-var url = process.env.DATABASEURL || "mongodb://localhost:27017/V8photos";
+//  
+var url = process.env.DATABASEURL ||"mongodb://localhost:27017/V8photos";
 
 try {
     var db = mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});

@@ -40,11 +40,15 @@ router.get("/newevent", middleware.isLoggedIn, function(req, res){
 
 // CREATE ROUTE / NEW Event ROUTE, ADD TO DB
 router.post("/newevent", middleware.isLoggedIn, middleware.upload, function(req,res){
-	cloudinary.uploader.upload(req.file.path, function(err, result) {
+	var quality = parseInt(req.body.quality);
+	cloudinary.uploader.upload(req.file.path, {quality: quality}, function(err, result) {
 		if(err) {
+			console.log(err);
 			req.flash('From cloudinary error', err.message);
 			return res.redirect('back');
-      	}
+      	}else{
+			console.log(result);
+		}
 		var event = true;
 		var photo = false;
 		var name = req.body.name;
@@ -95,6 +99,7 @@ router.get("/index/:id/editevent", middleware.isLoggedIn, function(req, res){
 // UPDATE Event ROUTE
 router.put("/index/event/:id", middleware.isLoggedIn, middleware.upload, function(req, res){
 	 eventObject.findById(req.params.id, async function(err, foundEvent){
+		var quality = parseInt(req.body.quality);
         if(err){
             req.flash("error", err.message);
             res.redirect("back");
@@ -102,8 +107,24 @@ router.put("/index/event/:id", middleware.isLoggedIn, middleware.upload, functio
 			  const foundEventName = foundEvent.name;
 			  if (req.file) {
 				  try {
-					  await cloudinary.uploader.destroy(foundEvent.imageId);
-					  var result = await cloudinary.uploader.upload(req.file.path);
+					  await cloudinary.uploader.destroy(foundEvent.imageId, function(err, result){
+						  if(err){
+							  console.log(err);
+							  req.flash("error", err.message);
+            				  res.redirect("back");
+						  }else{
+							  console.log("destroyed ? : ",result);
+						  }
+					  });
+					  var result = await cloudinary.uploader.upload(req.file.path, {quality: quality}, function(err,result){
+						  if(err){
+							  console.log(err);
+							  req.flash("error", err.message);
+            				  res.redirect("back");
+						  }else{
+							  console.log(result);
+						  }
+					  });
 					  foundEvent.imageId = result.public_id;
 					  foundEvent.image = result.secure_url;
 				  } catch(err) {
@@ -145,14 +166,46 @@ router.delete('/index/:id', middleware.isLoggedIn, function(req, res) {
       return res.redirect("back");
     }
     try {
+		var eventName = foundEvent.name;
+		eventObject.find({photo: true, eventName: eventName},async function(err, result){
+			if(err){
+				console.log("error",err);
+			}else{
+				console.log("result", result);
+				for(var i = 0; i < result.length; i++){
+					if(result[i].imageId){
+						await cloudinary.uploader.destroy(result[i].imageId, function(err, result){
+							if(err){
+								console.log('ERROR', err);
+								req.flash("error", err.message);
+								res.redirect("back");
+							}else{
+								console.log("destroyed ? : ",result);
+							}
+						});
+					}
+					result[i].remove();
+					console.log("removed photo");
+				}
+			}
+		})
 		if(foundEvent.imageId){
-        	await cloudinary.uploader.destroy(foundEvent.imageId, function(err, result) { console.log(result) });
+		await cloudinary.uploader.destroy(foundEvent.imageId, function(err, result){
+				if(err){
+					console.log(err);
+					req.flash("error", err.message);
+					res.redirect("back");
+				}else{
+					console.log("destroyed ? : ",result);
+				}
+			});
 		}
-        foundEvent.remove();
-        req.flash('success', 'Event deleted successfully!');
-        res.redirect('/index');
+		foundEvent.remove();
+		req.flash('success', 'Event deleted successfully!');
+		res.redirect('/index');
     } catch(err) {
         if(err) {
+		  console.log("error in catch", err);
           req.flash("error", err.message);
           return res.redirect("back");
         }

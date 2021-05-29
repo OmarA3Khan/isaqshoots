@@ -28,35 +28,40 @@ router.get("/index/:id/new", middleware.isLoggedIn, function(req, res){
 
 // CREATE ROUTE / NEW Photo ROUTE ADD TO DB
 router.post("/index/:id", middleware.isLoggedIn, middleware.upload, function(req,res){
-	eventObject.findById(req.params.id, function(err, foundEvent){
+	eventObject.findById(req.params.id,async function(err, foundEvent){
+		var quality = parseInt(req.body.quality);
+		console.log("quality", quality);
 		if(err){
 			req.flash('error', err.message);
 			return res.redirect("back")
 		}else{
 			if(req.file){
-				cloudinary.uploader.upload(req.file.path, function(err, result) {
-					if(err) {
+				var result = await cloudinary.uploader.upload(req.file.path, {quality: quality}, function(err, result) {
+					if(err){
+						console.log(err);
 						req.flash('From cloudinary error', err.message);
 						return res.redirect('back');
-				  }
-					var name = req.body.name;
-					var image = result.secure_url;
-					var imageId = result.public_id;
-					var price = req.body.price;
-					var description = req.body.description;
-					var eventName = foundEvent.name;
-					var event = false;
-					var photo = true;
-					var source = req.body.source;
-					var newPhotoObject = {name: name, image: image, imageId: imageId, price: price, description: description, eventName: eventName, event: event, photo: photo, source: source};
-					eventObject.create(newPhotoObject, function(err, newlyCreatedPhotoObject){
-						if (err){
-							req.flash('error', err.message);
-							return res.redirect('back');
-						}else{
-							return res.redirect("/index/"+req.params.id);
-						}
-					});
+					}else{
+						console.log(result);
+					}
+				});
+				var name = req.body.name;
+				var image = result.secure_url;
+				var imageId = result.public_id;
+				var price = req.body.price;
+				var description = req.body.description;
+				var eventName = foundEvent.name;
+				var event = false;
+				var photo = true;
+				var source = req.body.source;
+				var newPhotoObject = {name: name, image: image, imageId: imageId, price: price, description: description, eventName: eventName, event: event, photo: photo, source: source};
+				eventObject.create(newPhotoObject, function(err, newlyCreatedPhotoObject){
+					if (err){
+						req.flash('error', err.message);
+						return res.redirect('back');
+					}else{
+						return res.redirect("/index/"+req.params.id);
+					}
 				});
 			}else{
 				var name = req.body.name;
@@ -93,14 +98,31 @@ router.get("/index/:id/edit", middleware.isLoggedIn, function(req, res){
 // UPDATE Photo Object ROUTE
 router.put("/index/:id", middleware.isLoggedIn, middleware.upload, function(req, res){
 	 eventObject.findById(req.params.id, async function(err, foundPhoto){
+		var quality = parseInt(req.body.quality);
         if(err){
             req.flash("error", err.message);
             res.redirect("back");
         } else {
 			  if (req.file) {
 				  try {
-					  await cloudinary.uploader.destroy(foundPhoto.imageId);
-					  var result = await cloudinary.uploader.upload(req.file.path);
+					  await cloudinary.uploader.destroy(foundPhoto.imageId, function(err, result){
+						  if(err){
+							  console.log(err);
+							  req.flash("error", err.message);
+            				  res.redirect("back");
+						  }else{
+							  console.log("destroyed ?: ",result);
+						  }
+					  });
+					  var result = await cloudinary.uploader.upload(req.file.path, {quality: quality}, function(err, result){
+						  if(err){
+							  console.log(err);
+							  req.flash("error", err.message);
+            				  res.redirect("back");
+						  }else{
+							  console.log(result);
+						  }
+					  });
 					  foundPhoto.imageId = result.public_id;
 					  foundPhoto.image = result.secure_url;
 				  } catch(err) {
@@ -142,7 +164,15 @@ router.delete('/index/:id/photo', middleware.isLoggedIn, function(req, res) {
     }
     try {
 		if(photo.imageId){
-			await cloudinary.uploader.destroy(photo.imageId, function(result) { console.log(result) });
+			await cloudinary.uploader.destroy(photo.imageId, function(err, result){
+				  if(err){
+					  console.log(err);
+					  req.flash("error", err.message);
+					  res.redirect("back");
+				  }else{
+					  console.log("destroyed ? : ",result);
+				  }
+			  });
 		}
         photo.remove();
         req.flash('success', 'photo deleted successfully!');

@@ -9,7 +9,7 @@ var mediaSchema = new mongoose.Schema({
 	description : String,
 	event: Boolean,
 	photo: Boolean,
-	eventName: String
+	eventName: String,
 });
 
 module.exports = mongoose.model("media", mediaSchema);
