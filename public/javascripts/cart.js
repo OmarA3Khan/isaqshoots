@@ -139,7 +139,7 @@ function pollDOM () {
   var deleteButton = document.querySelectorAll((".dangerButton"));
   var qtyInputButton = document.querySelectorAll(".qty");
   if (qtyInputButton.length) {
-	  console.log("adding quantityChanged");
+	  // console.log("adding quantityChanged");
 	  qtyInputButton.forEach(function(button){
 		  button.addEventListener("change", quantityChanged)
 	  });

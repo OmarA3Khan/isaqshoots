@@ -212,8 +212,8 @@ router.post('/create-checkout-session', async (req, res) => {
 			},
             line_items: lineItems,
             mode: 'payment',
-            success_url: 'https://polar-cliffs-48816.herokuapp.com/success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url: 'https://polar-cliffs-48816.herokuapp.com/cancel',
+            success_url: 'https://www.omarazam.com/success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url: 'https://www.omarazam.com/cancel',
         });
         res.json({id: session.id});
     } catch(e) {
