@@ -1,7 +1,6 @@
 body {
     background: #e3e2df;
-    font-family: 'Montserrat', sans-serif;
-	/* background:url(../imgs/bg-pattern.png), #d6d4ce; */
+	font-family: 'Heebo', sans-serif;
 	color: #e3afbc;
 }
 
@@ -12,7 +11,6 @@ h1{
 #first {
 	color: #5D001E;
 	font-size: 3vmin;
-	margin-bottom: 10%;
 }
 
 h5{
@@ -59,10 +57,10 @@ a, a:hover, a:focus, a:active {
 .btn-square {
 	border-radius: 0;
 	border-width: 2px;
-	padding-right: 42px;
-	padding-left: 42px;
-	padding-top: 8px;
-	padding-bottom: 8px;
+	padding-right: 22px;
+	padding-left: 22px;
+	padding-top: 3px;
+	padding-bottom: 3px;
 	border-color: #9a1750;
 	color: #9a1750;
 }
@@ -71,6 +69,11 @@ a, a:hover, a:focus, a:active {
 	border-color: #9a1750;
 	background-color: #5d001e;
 	color: #e3afbc;
+}
+
+.btns {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 2.3vh;
 }
 
 .welcome-content{
