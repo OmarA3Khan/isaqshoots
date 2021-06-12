@@ -1,6 +1,11 @@
-var express        = require("express"),
-	app 	       = express(),
-	bodyParser     = require("body-parser"),
+var sslRedirect	   = require('heroku-ssl-redirect').default;
+var	express        = require("express");
+var	app 	       = express();
+
+// enable ssl redirect
+app.use(sslRedirect());
+
+var	bodyParser     = require("body-parser"),
 	mongoose       = require("mongoose"),
 	flash          = require("connect-flash"),
 	passport       = require("passport"),
