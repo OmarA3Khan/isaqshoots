@@ -2,15 +2,16 @@ var express 	= require("express");
 var router  	= express.Router();
 var eventObject = require("../models/events.js");
 var middleware  = require("../middleware/index.js");
+const upload 	= require('../middleware/multer.js');
 
 
 // ========  MULTER & CLOUDINARY CONFIG ==================== //
-var multer = require('multer');
-var storage = multer.diskStorage({
-  filename: function(req, file, callback) {
-    callback(null, Date.now() + file.originalname);
-  }
-});
+// var multer = require('multer');
+// var storage = multer.diskStorage({
+//   filename: function(req, file, callback) {
+//     callback(null, Date.now() + file.originalname);
+//   }
+// });
 
 var cloudinary = require("cloudinary").v2;
 cloudinary.config({ 
@@ -39,15 +40,15 @@ router.get("/newevent", middleware.isLoggedIn, function(req, res){
 });
 
 // CREATE ROUTE / NEW Event ROUTE, ADD TO DB
-router.post("/newevent", middleware.isLoggedIn, middleware.upload, function(req,res){
+router.post("/newevent", middleware.isLoggedIn, upload.single('image'), function(req,res){
 	var quality = parseInt(req.body.quality);
 	cloudinary.uploader.upload(req.file.path, {quality: quality}, function(err, result) {
 		if(err) {
 			console.log(err);
-			req.flash('From cloudinary error', err.message);
+			req.flash(' Error From cloudinary', err.message);
 			return res.redirect('back');
-      	}else{
-			console.log(result);
+	}else{
+			// console.log(result);
 		}
 		var event = true;
 		var photo = false;
@@ -61,7 +62,7 @@ router.post("/newevent", middleware.isLoggedIn, middleware.upload, function(req,
 		eventObject.create(newMediaObject, function(err, newlyCreatedMediaObject){
 			if (err){
 				req.flash('error', err.message);
-          		return res.redirect('back');
+	return res.redirect('back');
 			}else{
 				res.redirect("/index");
 			}
@@ -97,7 +98,7 @@ router.get("/index/:id/editevent", middleware.isLoggedIn, function(req, res){
 });
 
 // UPDATE Event ROUTE
-router.put("/index/event/:id", middleware.isLoggedIn, middleware.upload, function(req, res){
+router.put("/index/event/:id", middleware.isLoggedIn, upload.single('image'), function(req, res){
 	 eventObject.findById(req.params.id, async function(err, foundEvent){
 		var quality = parseInt(req.body.quality);
         if(err){

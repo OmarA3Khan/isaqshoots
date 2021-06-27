@@ -1,12 +1,12 @@
 var User = require("../models/user")
 
 // Multer config //
-var multer = require('multer');
-var storage = multer.diskStorage({
-  filename: function(req, file, callback) {
-    callback(null, Date.now() + file.originalname);
-  }
-});
+// var multer = require('multer');
+// var storage = multer.diskStorage({
+//   filename: function(req, file, callback) {
+//     callback(null, Date.now() + file.originalname);
+//   }
+// });
 
 // all the middleware goes here
 var middlewareObj = {};
@@ -20,6 +20,6 @@ middlewareObj.isLoggedIn = function(req, res, next){
 	res.redirect("/login");
 }
 
-middlewareObj.upload = multer({storage: storage}).single('image')
+// middlewareObj.upload = multer({storage: storage})
 
 module.exports = middlewareObj

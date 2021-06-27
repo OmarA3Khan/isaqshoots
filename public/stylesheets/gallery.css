@@ -4,6 +4,16 @@
 
 }
 
+#event-image {
+	max-height: 80vh;
+}
+
+/* .event-container {
+  height: 50vh;
+  flex-grow: 1;
+  overflow: hidden;
+} */
+
 /* MOBILE VIEW FOR GALLERY */
 .gallery .img-container {
   height: 40vh;

@@ -23,7 +23,7 @@ var	indexRoutes  = require("./routes/index");
 
 require('dotenv').config();
 //  
-var url = process.env.DATABASEURL ||"mongodb://localhost:27017/V8photos";
+var url ="mongodb://localhost:27017/V8photos";
 
 try {
     var db = mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -49,14 +49,14 @@ app.use(flash());
 
 // ========  MULTER & CLOUDINARY CONFIG ==================== //
 
-var multer = require('multer');
-var storage = multer.diskStorage({
-  filename: function(req, file, callback) {
-    callback(null, Date.now() + file.originalname);
-  }
-});
+// var multer = require('multer');
+// var storage = multer.diskStorage({
+//   filename: function(req, file, callback) {
+//     callback(null, Date.now() + file.originalname);
+//   }
+// });
 
-var upload = multer({storage: storage}).single('image');
+// var upload = multer({storage: storage}).single('image');
 
 var cloudinary = require("cloudinary").v2;
 cloudinary.config({ 

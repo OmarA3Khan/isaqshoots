@@ -3,6 +3,7 @@
 var radioBtns = document.querySelectorAll(".mediaUpload")
 var videoUrl = document.querySelector("#videoUrl");
 var Image = document.querySelector("#imageUpload");
+var videoUrlInput = document.querySelector("#videoUrlInput");
 
 for (var i = 0; i < radioBtns.length; i++){
 	radioBtns[i].addEventListener("click", function(){
@@ -15,6 +16,8 @@ for (var i = 0; i < radioBtns.length; i++){
 		}else{
 			videoUrl.classList.add("d-none");
 			Image.classList.add("d-none");
+			console.log(videoUrlInput);
+			videoUrlInput.value = null;
 		}
 	});
 };

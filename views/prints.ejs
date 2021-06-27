@@ -3,7 +3,7 @@
 <div class="container-fluid">
 	<div class="gallery">
 		<% media.forEach(function(photo){ %>
-			<% if(!photo.source){ %>
+			<% if(!photo.source && photo.price){ %>
 			  <div class="img-container">
 				<a id="moreinfo" href="/prints/event/<%= photo._id %>"><img class="" src="<%= photo.image %>" alt="<%= photo.name %>" data-original="<%= photo._id %>"></a>
 			  </div>

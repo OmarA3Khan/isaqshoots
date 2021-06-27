@@ -28,14 +28,14 @@
 				</div>
 				<div  class="form-group my-1">
                     <label for="image">Image<p id="imageUpload" class="d-none">if you're uploading a video, there's no need to upload an image in the <strong>Choose File</strong> option</p></label>
-                    <input type="file" id="image" name="image" accept="image/*" >
+                    <input type="file" id="image" name="image" accept="image/*" multiple>
                 </div>
 				<div class="form-group">
 					<label>Quality : <p>avoid setting the quality above 40, 10 is recommended</p></label>
 					<input class="form-control" type="number" name="quality" placeholder="" value=10 min=1>
 				</div>
 				<div id="videoUrl" class="d-none form-group">
-					<input class="form-control" type="text" name="source" placeholder="https://www.youtube.com/embed/video_id">
+					<input id="videoUrlInput" class="form-control" type="text" name="source" placeholder="https://www.youtube.com/embed/video_id">
 					<p>place the URL of the video you want in the format shown above</p>
 				</div>
 				<div class="form-group">
