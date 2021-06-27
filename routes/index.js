@@ -112,23 +112,23 @@ router.get("/about", function(req,res){
 
 // ========================== Register Route  ======================= // 
 
-router.get("/register", function(req, res){
-	res.render("register");
-});
+// router.get("/register", function(req, res){
+// 	res.render("register");
+// });
 
-router.post("/register", function(req, res){
-	var newUser = new User({username: req.body.username});
-	User.register(newUser, req.body.password, function(err, newlyCreatedUser){
-		if(err){
-			req.flash("error", err.message);
-			return res.redirect("/register");
-		}
-		passport.authenticate("local")(req, res, function(){
-			req.flash("success", "Welcome to IsaqShoots "+ newlyCreatedUser.username);
-			res.redirect("/index");
-		});
-	});
-});
+// router.post("/register", function(req, res){
+// 	var newUser = new User({username: req.body.username});
+// 	User.register(newUser, req.body.password, function(err, newlyCreatedUser){
+// 		if(err){
+// 			req.flash("error", err.message);
+// 			return res.redirect("/register");
+// 		}
+// 		passport.authenticate("local")(req, res, function(){
+// 			req.flash("success", "Welcome to IsaqShoots "+ newlyCreatedUser.username);
+// 			res.redirect("/index");
+// 		});
+// 	});
+// });
 
 //       ========================================================== //
 
